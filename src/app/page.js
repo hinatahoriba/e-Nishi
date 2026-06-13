@@ -315,6 +315,7 @@ function Step3({ formData, setFormData, activeSns, toggleSns }) {
 function Step4({ cardUrl }) {
   const handleCopyLink = () => {
     const fullUrl = window.location.origin + cardUrl;
+
     navigator.clipboard
       .writeText(fullUrl)
       .then(() => {
@@ -331,6 +332,28 @@ function Step4({ cardUrl }) {
       : cardUrl
   )}`;
 
+  const handleDownloadQr = async () => {
+    try {
+      const response = await fetch(qrApiUrl);
+      const blob = await response.blob();
+
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "digital-business-card-qr.png";
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error(error);
+      alert("QRコードの保存に失敗しました");
+    }
+  };
+
   return (
     <div className="space-y-6 flex flex-col items-center justify-center py-4">
       <div className="p-4 border border-[#EAEAEA] bg-[#FBFBFB] rounded-sm">
@@ -341,6 +364,7 @@ function Step4({ cardUrl }) {
           className="w-32 h-32 mix-blend-multiply"
         />
       </div>
+
       <p className="text-[11px] text-[#888] tracking-wider text-center leading-relaxed">
         あなたのデジタル名刺が完成しました。
         <br />
@@ -367,14 +391,14 @@ function Step4({ cardUrl }) {
           リンクをコピー
         </button>
 
-        <a
-          href={qrApiUrl}
-          download="digital-business-card-qr.png"
+        <button
+          type="button"
+          onClick={handleDownloadQr}
           className="flex items-center justify-center gap-2 py-3 px-4 border border-[#EAEAEA] bg-white text-[#111] text-xs tracking-wider rounded-sm hover:bg-[#F5F5F5] transition-colors duration-300 outline-none"
         >
           <i className="fa-solid fa-download text-sm" />
           QRコードを保存
-        </a>
+        </button>
       </div>
     </div>
   );
