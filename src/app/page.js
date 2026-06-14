@@ -46,14 +46,14 @@ const SNS_OPTIONS = [
 function StepCircle({ stepNum, currentStep }) {
   if (stepNum < currentStep) {
     return (
-      <div className="w-10 h-10 rounded-full bg-[#111] text-white flex items-center justify-center font-light text-sm z-10 transition-all duration-500">
+      <div className="w-8 h-8 rounded-full bg-[#111] text-white flex items-center justify-center font-light text-[11px] z-10 transition-all duration-500">
         ✓
       </div>
     );
   }
   if (stepNum === currentStep) {
     return (
-      <div className="font-[var(--font-cormorant-garamond)] w-10 h-10 rounded-full border border-[#111] bg-white text-[#111] flex items-center justify-center font-light text-lg z-10 transition-all duration-500 shadow-sm scale-105"
+      <div className="font-[var(--font-cormorant-garamond)] w-8 h-8 rounded-full border border-[#111] bg-white text-[#111] flex items-center justify-center font-light text-sm z-10 transition-all duration-500 shadow-sm scale-105"
         style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
       >
         {stepNum < 10 ? `0${stepNum}` : stepNum}
@@ -61,7 +61,7 @@ function StepCircle({ stepNum, currentStep }) {
     );
   }
   return (
-    <div className="w-10 h-10 rounded-full bg-[#F3F3F3] text-[#AAA] flex items-center justify-center font-light text-lg z-10 transition-all duration-500"
+    <div className="w-8 h-8 rounded-full bg-[#F3F3F3] text-[#AAA] flex items-center justify-center font-light text-sm z-10 transition-all duration-500"
       style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
     >
       {stepNum < 10 ? `0${stepNum}` : stepNum}
@@ -79,7 +79,7 @@ function Stepper({ currentStep }) {
 
   return (
     <div className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-[#EAEAEA]">
-      <div className="max-w-4xl mx-auto py-10 px-8">
+      <div className="max-w-4xl mx-auto py-3 px-6">
         <div className="flex items-center justify-between">
           {steps.map((step, idx) => (
             <div
@@ -89,7 +89,7 @@ function Stepper({ currentStep }) {
               <div className="flex flex-col items-center">
                 <StepCircle stepNum={step.num} currentStep={currentStep} />
                 <p
-                  className={`mt-3 text-[11px] tracking-[0.15em] ${
+                  className={`mt-1.5 text-[10px] tracking-[0.15em] ${
                     step.num < currentStep
                       ? "font-medium text-[#111]"
                       : step.num === currentStep
@@ -102,7 +102,7 @@ function Stepper({ currentStep }) {
               </div>
               {idx < steps.length - 1 && (
                 <div
-                  className={`absolute top-5 left-1/2 w-full h-[1px] transition-all duration-500 ${
+                  className={`absolute top-4 left-1/2 w-full h-[1px] transition-all duration-500 ${
                     step.num < currentStep ? "bg-[#111]" : "bg-[#EAEAEA]"
                   }`}
                 />
@@ -465,7 +465,7 @@ export default function Home() {
     <>
       <Stepper currentStep={currentStep} />
 
-      <div className="pt-48 pb-24 px-6 max-w-xl mx-auto">
+      <div className="pt-28 pb-24 px-6 max-w-xl mx-auto">
         <div className="bg-white border border-[#EAEAEA] p-10 rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.02)] min-h-[400px] flex flex-col justify-between">
           <div className="mb-8">
             <h2 className="text-lg font-light tracking-[0.1em] text-[#111] mb-2">
