@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -69,6 +70,37 @@ function StepCircle({ stepNum, currentStep }) {
   );
 }
 
+function BrandLogo() {
+  return (
+    <Link
+      href="/"
+      className="hidden shrink-0 items-center gap-3 sm:flex"
+      aria-label="E-NISHI home"
+    >
+      <Image
+        src="/icon.png"
+        alt="E-NISHI icon"
+        width={44}
+        height={44}
+        className="h-10 w-10 object-contain"
+        priority
+      />
+      <span className="h-10 w-px bg-[#C7A86B]/70" aria-hidden="true" />
+      <div className="flex items-baseline gap-3 text-[#222]">
+        <span
+          className="text-[1.9rem] leading-none tracking-[-0.06em] sm:text-[2.35rem]"
+          style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
+        >
+          縁
+        </span>
+        <span className="text-[0.74rem] font-light tracking-[0.34em] text-[#2A2A2A] sm:text-[0.88rem]">
+          E-NISHI
+        </span>
+      </div>
+    </Link>
+  );
+}
+
 function Stepper({ currentStep }) {
   const steps = [
     { num: 1, label: "FRONT" },
@@ -79,36 +111,40 @@ function Stepper({ currentStep }) {
 
   return (
     <div className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-[#EAEAEA]">
-      <div className="max-w-4xl mx-auto py-3 px-6">
-        <div className="flex items-center justify-between">
-          {steps.map((step, idx) => (
-            <div
-              key={step.num}
-              className="flex-1 relative flex flex-col items-center"
-            >
-              <div className="flex flex-col items-center">
-                <StepCircle stepNum={step.num} currentStep={currentStep} />
-                <p
-                  className={`mt-1.5 text-[10px] tracking-[0.15em] ${
-                    step.num < currentStep
-                      ? "font-medium text-[#111]"
-                      : step.num === currentStep
-                        ? "font-semibold text-[#111]"
-                        : "font-normal text-[#AAA]"
-                  }`}
-                >
-                  {step.label}
-                </p>
+      <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <BrandLogo />
+
+          <div className="flex w-full items-center">
+            {steps.map((step, idx) => (
+              <div
+                key={step.num}
+                className="flex-1 relative flex flex-col items-center"
+              >
+                <div className="flex flex-col items-center">
+                  <StepCircle stepNum={step.num} currentStep={currentStep} />
+                  <p
+                    className={`mt-1.5 text-[10px] tracking-[0.15em] ${
+                      step.num < currentStep
+                        ? "font-medium text-[#111]"
+                        : step.num === currentStep
+                          ? "font-semibold text-[#111]"
+                          : "font-normal text-[#AAA]"
+                    }`}
+                  >
+                    {step.label}
+                  </p>
+                </div>
+                {idx < steps.length - 1 && (
+                  <div
+                    className={`absolute top-4 left-1/2 w-full h-[1px] transition-all duration-500 ${
+                      step.num < currentStep ? "bg-[#111]" : "bg-[#EAEAEA]"
+                    }`}
+                  />
+                )}
               </div>
-              {idx < steps.length - 1 && (
-                <div
-                  className={`absolute top-4 left-1/2 w-full h-[1px] transition-all duration-500 ${
-                    step.num < currentStep ? "bg-[#111]" : "bg-[#EAEAEA]"
-                  }`}
-                />
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -465,7 +501,7 @@ export default function Home() {
     <>
       <Stepper currentStep={currentStep} />
 
-      <div className="pt-28 pb-24 px-6 max-w-xl mx-auto">
+      <div className="pt-28 pb-24 px-6 max-w-xl mx-auto sm:pt-36">
         <div className="bg-white border border-[#EAEAEA] p-10 rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.02)] min-h-[400px] flex flex-col justify-between">
           <div className="mb-8">
             <h2 className="text-lg font-light tracking-[0.1em] text-[#111] mb-2">
