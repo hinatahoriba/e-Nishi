@@ -44,6 +44,8 @@ const SNS_OPTIONS = [
   { key: "github", icon: "fa-brands fa-github", label: "GitHub" },
 ];
 
+const MESSAGE_MAX_LENGTH = 20;
+
 function StepCircle({ stepNum, currentStep }) {
   if (stepNum < currentStep) {
     return (
@@ -182,11 +184,13 @@ function Step1({ formData, setFormData }) {
         </div>
       </div>
       <div>
-        <label className="input-label">所属（大学・学部・学科など）</label>
+        <label className="input-label">
+          所属（大学・会社など）<span className="required-mark">必須</span>
+        </label>
         <input
           type="text"
           className="input-field"
-          placeholder="〇〇大学 〇〇学部 〇〇学科"
+          placeholder="〇〇大学・株式会社〇〇"
           value={formData.affiliation}
           onChange={(e) =>
             setFormData({ ...formData, affiliation: e.target.value })
@@ -194,11 +198,11 @@ function Step1({ formData, setFormData }) {
         />
       </div>
       <div>
-        <label className="input-label">特技</label>
+        <label className="input-label">趣味</label>
         <input
           type="text"
           className="input-field"
-          placeholder="プログラミング、写真撮影"
+          placeholder="読書、写真撮影"
           value={formData.skill}
           onChange={(e) => setFormData({ ...formData, skill: e.target.value })}
         />
@@ -207,12 +211,17 @@ function Step1({ formData, setFormData }) {
         <label className="input-label">一言メッセージ</label>
         <textarea
           className="input-field resize-none h-16"
+          maxLength={MESSAGE_MAX_LENGTH}
+          aria-describedby="message-limit"
           placeholder="よろしくお願いします。"
           value={formData.message}
           onChange={(e) =>
             setFormData({ ...formData, message: e.target.value })
           }
         />
+        <p id="message-limit" className="mt-1 text-[10px] text-[#AAA] text-right">
+          {formData.message.length}/{MESSAGE_MAX_LENGTH}文字
+        </p>
       </div>
     </div>
   );
@@ -458,6 +467,11 @@ export default function Home() {
     github: "",
   });
 
+  const isStep1Complete =
+    formData.name.trim().length > 0 &&
+    formData.roman.trim().length > 0 &&
+    formData.affiliation.trim().length > 0;
+
   const toggleSns = (key) => {
     setActiveSns((prev) =>
       prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
@@ -482,6 +496,10 @@ export default function Home() {
   };
 
   const handleNext = () => {
+    if (currentStep === 1 && !isStep1Complete) {
+      return;
+    }
+
     if (currentStep < TOTAL_STEPS) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -502,7 +520,7 @@ export default function Home() {
       <Stepper currentStep={currentStep} />
 
       <div className="pt-28 pb-24 px-6 max-w-xl mx-auto sm:pt-36">
-        <div className="bg-white border border-[#EAEAEA] p-10 rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.02)] min-h-[400px] flex flex-col justify-between">
+        <div className="bg-white border border-[#EAEAEA] p-10 rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.02)] min-h-[400px] flex flex-col justify-start">
           <div className="mb-8">
             <h2 className="text-lg font-light tracking-[0.1em] text-[#111] mb-2">
               {STEP_DATA[currentStep].title}
@@ -512,7 +530,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex-1">
+          <div className={currentStep === 4 ? "flex-1" : ""}>
             {currentStep === 1 && (
               <Step1 formData={formData} setFormData={setFormData} />
             )}
@@ -533,7 +551,7 @@ export default function Home() {
             {currentStep === 4 && <Step4 cardUrl={cardUrl} />}
           </div>
 
-          <div className="flex justify-between items-center mt-12 pt-6 border-t border-[#F5F5F5]">
+          <div className="flex justify-between items-center mt-8 pt-6 border-t border-[#F5F5F5]">
             <button
               onClick={handlePrev}
               className="flex items-center gap-2 text-xs font-light tracking-[0.1em] text-[#888] hover:text-[#111] transition-colors duration-300 outline-none"
@@ -546,7 +564,9 @@ export default function Home() {
             </button>
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 text-xs font-light tracking-[0.1em] text-[#111] hover:text-[#888] transition-colors duration-300 outline-none"
+              disabled={currentStep === 1 && !isStep1Complete}
+              aria-disabled={currentStep === 1 && !isStep1Complete}
+              className="flex items-center gap-2 text-xs font-light tracking-[0.1em] text-[#111] hover:text-[#888] transition-colors duration-300 outline-none disabled:cursor-not-allowed disabled:text-[#C7C7C7] disabled:hover:text-[#C7C7C7]"
             >
               {currentStep === TOTAL_STEPS ? (
                 <>

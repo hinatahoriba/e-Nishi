@@ -185,12 +185,12 @@ function CardContent({ searchParamsPromise }) {
               </p>
             </div>
 
-            {/* 特技・一言メッセージ */}
+            {/* 趣味・一言メッセージ */}
             <div className={`text-[11px] space-y-4 w-full px-2 mb-2 ${theme.textSecondary}`}>
               {skill && (
                 <div className="space-y-1">
                   <p className={`text-[8px] tracking-wider font-sans ${theme.textMuted}`}>
-                    SKILL
+                    趣味
                   </p>
                   <p className={`tracking-widest text-[11px] ${theme.textPrimary}`}>
                     {skill}
