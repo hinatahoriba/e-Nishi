@@ -15,7 +15,7 @@ const cormorantGaramond = Cormorant_Garamond({
 });
 
 export const metadata = {
-  title: "プロフィールカード作成",
+  title: "E-NISHI",
   description: "デジタル名刺を作成・共有できるWebアプリ",
 };
 
