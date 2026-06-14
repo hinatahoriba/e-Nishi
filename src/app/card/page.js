@@ -111,12 +111,6 @@ function MenuOverlay({ isOpen, onClose, cardUrl }) {
             )
           ))}
         </nav>
-
-        <div className="pt-4 text-center">
-          <p className="text-[10px] tracking-[0.3em] text-stone-400">
-            DESIGN YOUR IDENTITY
-          </p>
-        </div>
       </div>
     </div>
   );
