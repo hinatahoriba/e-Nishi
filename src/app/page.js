@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 const STEP_DATA = {
   1: {
@@ -45,6 +46,28 @@ const SNS_OPTIONS = [
 ];
 
 const MESSAGE_MAX_LENGTH = 20;
+
+function getInitialFormData(params) {
+  return {
+    name: params.get("name") || "",
+    roman: params.get("roman") || "",
+    affiliation: params.get("affiliation") || "",
+    skill: params.get("skill") || "",
+    message: params.get("message") || "",
+    portfolio: params.get("portfolio") || "",
+    line: params.get("line") || "",
+    x: params.get("x") || "",
+    insta: params.get("insta") || "",
+    tiktok: params.get("tiktok") || "",
+    github: params.get("github") || "",
+  };
+}
+
+function getInitialActiveSns(params) {
+  return ["line", "x", "insta", "tiktok", "github"].filter((key) =>
+    params.get(key)
+  );
+}
 
 function StepCircle({ stepNum, currentStep }) {
   if (stepNum < currentStep) {
@@ -450,22 +473,25 @@ function Step4({ cardUrl }) {
 }
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const searchParamsString = searchParams.toString();
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedColor, setSelectedColor] = useState("stone");
-  const [activeSns, setActiveSns] = useState([]);
-  const [formData, setFormData] = useState({
-    name: "",
-    roman: "",
-    affiliation: "",
-    skill: "",
-    message: "",
-    portfolio: "",
-    line: "",
-    x: "",
-    insta: "",
-    tiktok: "",
-    github: "",
-  });
+  const [selectedColor, setSelectedColor] = useState(
+    searchParams.get("color") || "stone"
+  );
+  const [activeSns, setActiveSns] = useState(() =>
+    getInitialActiveSns(searchParams)
+  );
+  const [formData, setFormData] = useState(() =>
+    getInitialFormData(searchParams)
+  );
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParamsString);
+    setSelectedColor(params.get("color") || "stone");
+    setActiveSns(getInitialActiveSns(params));
+    setFormData(getInitialFormData(params));
+  }, [searchParamsString]);
 
   const isStep1Complete =
     formData.name.trim().length > 0 &&

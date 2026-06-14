@@ -1,13 +1,132 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Suspense, use, useState } from "react";
+import { Suspense, use, useEffect, useState } from "react";
+
+function MenuOverlay({ isOpen, onClose, cardUrl }) {
+  const handleDownloadQr = async () => {
+    const fullCardUrl =
+      typeof window !== "undefined"
+        ? `${window.location.origin}${cardUrl}`
+        : cardUrl;
+    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(fullCardUrl)}`;
+
+    try {
+      const response = await fetch(qrApiUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "digital-business-card-qr.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+      onClose();
+    } catch (error) {
+      console.error(error);
+      alert("QRコードのダウンロードに失敗しました");
+    }
+  };
+
+  const editUrl = cardUrl === "/card" ? "/" : `/${cardUrl.replace(/^\/card/, "")}`;
+  const menuItems = [
+    {
+      href: "/",
+      title: "New Card",
+      description: "新しく名刺を作成する",
+      target: "_self",
+    },
+    {
+      action: handleDownloadQr,
+      title: "Create QR",
+      description: "この名刺のQRコードを保存する",
+    },
+    {
+      href: editUrl,
+      title: "Edit Data",
+      description: "名刺を編集する",
+      target: "_self",
+    },
+  ];
+
+  return (
+    <div
+      className={`fixed inset-0 z-40 flex flex-col items-center justify-center bg-[#F4F0EA] px-8 transition-all duration-500 ease-in-out ${
+        isOpen
+          ? "translate-y-0 opacity-100 pointer-events-auto"
+          : "-translate-y-[10px] opacity-0 pointer-events-none"
+      }`}
+    >
+      <div className="max-w-sm w-full space-y-12">
+        <div className="text-center">
+          <h2
+            className="mb-2 text-2xl font-light tracking-[0.2em] text-stone-700"
+            style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
+          >
+            MENU
+          </h2>
+          <div className="mx-auto h-px w-8 bg-stone-300/60" />
+        </div>
+
+        <nav className="flex flex-col space-y-6">
+          {menuItems.map((item) => (
+            item.action ? (
+              <button
+                key={item.title}
+                type="button"
+                className="group flex w-full items-baseline justify-between border-b border-stone-300/60 pb-4 text-left"
+                onClick={item.action}
+              >
+                <span
+                  className="text-2xl tracking-[0.12em] font-light text-stone-700 transition-colors group-hover:text-stone-500"
+                  style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
+                >
+                  {item.title}
+                </span>
+                <span className="text-xs font-light tracking-wider text-stone-500">
+                  {item.description}
+                </span>
+              </button>
+            ) : (
+              <Link
+                key={item.title}
+                href={item.href}
+                target={item.target}
+                rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+                className="group flex items-baseline justify-between border-b border-stone-300/60 pb-4"
+                onClick={onClose}
+              >
+                <span
+                  className="text-2xl tracking-[0.12em] font-light text-stone-700 transition-colors group-hover:text-stone-500"
+                  style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
+                >
+                  {item.title}
+                </span>
+                <span className="text-xs font-light tracking-wider text-stone-500">
+                  {item.description}
+                </span>
+              </Link>
+            )
+          ))}
+        </nav>
+
+        <div className="pt-4 text-center">
+          <p className="text-[10px] tracking-[0.3em] text-stone-400">
+            DESIGN YOUR IDENTITY
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function CardContent({ searchParamsPromise }) {
   // Next.js 16 breaking change: use() to unwrap searchParams promise
   const searchParams = use(searchParamsPromise);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const name = searchParams.name || "";
   const roman = searchParams.roman || "";
@@ -25,6 +144,16 @@ function CardContent({ searchParamsPromise }) {
   const hasSNS = line || twitter || insta || tiktok || github;
   const hasPortfolio = !!portfolio;
   const hasBackContent = hasSNS || hasPortfolio;
+  const currentQuery = new URLSearchParams(searchParams).toString();
+  const cardUrl = currentQuery ? `/card?${currentQuery}` : "/card";
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
 
   const THEMES = {
     stone: {
@@ -153,6 +282,38 @@ function CardContent({ searchParamsPromise }) {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen p-6 gap-4">
+      <header className="fixed top-0 left-0 z-30 h-20 w-full bg-[#FAF8F5]/80 backdrop-blur-sm" />
+
+      <button
+        type="button"
+        className="fixed top-5 right-6 z-50 flex h-10 w-10 flex-col items-center justify-center gap-[6px] focus:outline-none"
+        aria-label="メニュー"
+        aria-expanded={isMenuOpen}
+        onClick={() => setIsMenuOpen((prev) => !prev)}
+      >
+        <span
+          className={`block h-px w-6 bg-stone-600 transition-all duration-300 ease-in-out ${
+            isMenuOpen ? "translate-y-[7px] rotate-45" : ""
+          }`}
+        />
+        <span
+          className={`block h-px w-6 bg-stone-600 transition-all duration-300 ease-in-out ${
+            isMenuOpen ? "opacity-0" : ""
+          }`}
+        />
+        <span
+          className={`block h-px w-6 bg-stone-600 transition-all duration-300 ease-in-out ${
+            isMenuOpen ? "translate-y-[-7px] -rotate-45" : ""
+          }`}
+        />
+      </button>
+
+      <MenuOverlay
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        cardUrl={cardUrl}
+      />
+
       <div
         className={`w-80 aspect-[55/91] perspective-1000 select-none transform transition-transform duration-300 ${hasBackContent ? "hover:-translate-y-1 cursor-pointer" : ""}`}
         onClick={() => hasBackContent && setIsFlipped(!isFlipped)}
