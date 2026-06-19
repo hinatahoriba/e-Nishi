@@ -3,6 +3,7 @@
 import { Suspense, use, useEffect, useState } from "react";
 import MenuOverlay from "../../components/card/MenuOverlay";
 import BusinessCard from "../../components/card/BusinessCard";
+import { getTemplateById } from "../../components/card/templates";
 
 function CardContent({ searchParamsPromise }) {
   const searchParams = use(searchParamsPromise);
@@ -21,6 +22,7 @@ function CardContent({ searchParamsPromise }) {
   const tiktok = searchParams.tiktok || "";
   const github = searchParams.github || "";
   const templateId = searchParams.template || "1";
+  const { pageBg } = getTemplateById(templateId);
   const currentQuery = new URLSearchParams(searchParams).toString();
   const cardUrl = currentQuery ? `/card?${currentQuery}` : "/card";
 
@@ -34,8 +36,10 @@ function CardContent({ searchParamsPromise }) {
 
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-6">
-      <header className="fixed top-0 left-0 z-30 h-20 w-full bg-[#FAF8F5]/80 backdrop-blur-sm" />
+    <div
+      className={`flex min-h-screen flex-col items-center justify-center gap-4 p-6 ${pageBg}`}
+    >
+      <header className={`fixed top-0 left-0 z-30 h-20 w-full ${pageBg}`} />
 
       <button
         type="button"

@@ -1,4 +1,9 @@
-import { Noto_Sans_JP, Cormorant_Garamond } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  DM_Sans,
+  Montserrat,
+  Noto_Sans_JP,
+} from "next/font/google";
 import "./globals.css";
 
 const notoSansJP = Noto_Sans_JP({
@@ -14,6 +19,18 @@ const cormorantGaramond = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["200", "400", "500"],
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  weight: ["300", "400"],
+});
+
 export const metadata = {
   title: "E-NISHI",
   description: "デジタル名刺を作成・共有できるWebアプリ",
@@ -23,7 +40,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="ja"
-      className={`${notoSansJP.variable} ${cormorantGaramond.variable} h-full antialiased`}
+      className={`${notoSansJP.variable} ${cormorantGaramond.variable} ${montserrat.variable} ${dmSans.variable} h-full antialiased`}
     >
       <head>
         <link

@@ -25,7 +25,7 @@ function TemplateThumbnail({ template, isSelected, onClick, formData }) {
       type="button"
       onClick={onClick}
       className="flex-shrink-0 flex flex-col items-center gap-2.5 outline-none group"
-      aria-label="テンプレートを選択"
+      aria-label={`テンプレートを選択: ${template.label ?? template.id}`}
       aria-pressed={isSelected}
     >
       <div

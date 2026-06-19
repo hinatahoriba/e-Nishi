@@ -7,49 +7,45 @@ export default function CardTemplate2({
   skill,
   message,
 }) {
-  const hasBottom = Boolean(skill || message);
-
   return (
-    <div
-      className="w-full h-full bg-[#fdfaf9] rounded-sm shadow-xl p-8 flex flex-col justify-between items-center text-center border border-[#e3dad5]/50"
-      style={{ color: "#5c4e48" }}
-    >
-      <div className="mt-6 text-center">
-        <p className="text-[10px] tracking-[0.25em] font-light" style={{ color: "#bfa095" }}>
+    <div className="relative flex h-full w-full select-none flex-col justify-between overflow-hidden rounded-sm border border-blue-50/50 bg-white p-8 text-center text-[#56687a] shadow-xl">
+      <div className="absolute -bottom-12 -right-12 h-44 w-44 rounded-full bg-blue-100/40 blur-2xl" />
+      <div className="absolute -left-12 -top-12 h-32 w-32 rounded-full bg-indigo-50/60 blur-xl" />
+
+      <div className="z-10 mt-4 space-y-1">
+        <div className="text-xs text-[#96b3cc]">
+          <i className="fa-regular fa-moon" />
+        </div>
+        <span className="font-serif text-sm font-light tracking-[0.1em] text-[#56687a]">
           {affiliation}
+        </span>
+        <p className="text-[7px] uppercase tracking-[0.15em] text-[#96b3cc]">
+          affiliation
         </p>
       </div>
 
-      <div className="space-y-2">
-        <h1
-          className="text-2xl font-light tracking-[0.3em]"
-          style={{
-            fontFamily: "var(--font-cormorant-garamond), serif",
-            color: "#5c4e48",
-          }}
-        >
+      <div className="z-10 space-y-1.5">
+        <p className="text-[8px] uppercase tracking-[0.15em] text-stone-300">
+          name
+        </p>
+        <h1 className="font-sans text-xl font-light tracking-[0.25em] text-[#425366]">
           {name}
         </h1>
-        {roman && (
-          <p className="text-[8px] tracking-[0.2em] uppercase font-light" style={{ color: "#b0a09a" }}>
-            {roman}
-          </p>
-        )}
+        <p className="text-[8px] font-light tracking-[0.05em] italic text-[#96b3cc]">
+          {roman}
+        </p>
       </div>
 
-      <div className="mb-6 w-full flex flex-col items-center gap-2">
-        {hasBottom && (
-          <div className="w-4 h-[1px] mb-1" style={{ backgroundColor: "#bfa095" }} />
-        )}
+      <div className="z-10 mb-4 flex flex-col items-center gap-1 text-[9px] font-light tracking-widest text-[#96b3cc]">
         {skill && (
-          <p className="text-[9px] tracking-[0.2em]" style={{ color: "#b0a09a" }}>
-            {skill}
-          </p>
+          <div className="flex items-center gap-1 text-[#7a9bb8]">
+            <span>趣味：{skill}</span>
+          </div>
         )}
         {message && (
-          <p className="text-[8px] tracking-[0.15em] font-light" style={{ color: "#c8bdb8" }}>
+          <span className="mt-0.5 text-[8px] tracking-wider text-stone-400">
             {message}
-          </p>
+          </span>
         )}
       </div>
     </div>
