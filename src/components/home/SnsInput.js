@@ -74,7 +74,7 @@ export default function SnsInput({
             <li className="flex items-center gap-2">
               <span className="font-medium text-[#111]">①</span>
               <a
-                href="https://x.com/i/flow/login"
+                href="https://x.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 rounded-full bg-[#111] px-3 py-1 text-[11px] font-medium text-white transition-opacity hover:opacity-70"
