@@ -38,6 +38,14 @@ export default function HomeClient() {
     setFormData(getInitialFormData(params));
   }, [searchParamsString]);
 
+  useEffect(() => {
+    // Mobile browsers can keep the page zoomed after an input focus;
+    // clearing focus when the step changes avoids carrying that state into STEP2.
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  }, [currentStep]);
+
   const nameParts = splitNameParts(formData.name);
   const romanParts = splitNameParts(formData.roman);
 
