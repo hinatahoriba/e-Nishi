@@ -1,18 +1,22 @@
 "use client";
 
+import { useState } from "react";
 import { CARD_TEMPLATES } from "../card/templates";
+import BusinessCard from "../card/BusinessCard";
 
 const CARD_W = 320;
 const CARD_H = Math.round(CARD_W * (91 / 55));
 
 const THUMB_W = 96;
-const SCALE = THUMB_W / CARD_W;
-const THUMB_H = Math.round(CARD_H * SCALE);
+const THUMB_SCALE = THUMB_W / CARD_W;
+const THUMB_H = Math.round(CARD_H * THUMB_SCALE);
+
+const PREVIEW_W = 200;
+const PREVIEW_H = Math.round(CARD_H * (PREVIEW_W / CARD_W));
+const PREVIEW_SCALE = PREVIEW_W / CARD_W;
 
 function CardPreview({ formData, selectedTemplate }) {
-  const { component: TemplateComponent } =
-    CARD_TEMPLATES.find((template) => template.id === selectedTemplate) ??
-    CARD_TEMPLATES[0];
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const previewData = {
     name: formData.name || "山田 花子",
@@ -20,12 +24,52 @@ function CardPreview({ formData, selectedTemplate }) {
     affiliation: formData.affiliation || "株式会社サンプル",
     skill: formData.skill || "",
     message: formData.message || "",
+    portfolio: formData.portfolio || "",
+    line: formData.line || "",
+    twitter: formData.x || "",
+    insta: formData.insta || "",
+    tiktok: formData.tiktok || "",
+    github: formData.github || "",
   };
+
+  const hasBackContent = Boolean(
+    previewData.portfolio || previewData.line || previewData.twitter ||
+    previewData.insta || previewData.tiktok || previewData.github
+  );
 
   return (
     <div className="flex justify-center">
-      <div className="aspect-[55/91] w-[180px] sm:w-[240px]">
-        <TemplateComponent {...previewData} />
+      <div
+        style={{
+          width: PREVIEW_W,
+          height: PREVIEW_H,
+          position: "relative",
+          overflow: "hidden",
+          cursor: hasBackContent ? "pointer" : "default",
+        }}
+        onClick={() => hasBackContent && setIsFlipped((prev) => !prev)}
+      >
+        <div
+          style={{
+            width: CARD_W,
+            height: CARD_H,
+            transform: `scale(${PREVIEW_SCALE})`,
+            transformOrigin: "top left",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <BusinessCard
+            {...previewData}
+            templateId={selectedTemplate}
+            isFlipped={isFlipped}
+            onToggleFlip={() => setIsFlipped((prev) => !prev)}
+            className="w-80"
+            showFlipHint={false}
+          />
+        </div>
       </div>
     </div>
   );
@@ -62,7 +106,7 @@ function TemplateThumbnail({ template, isSelected, onClick, formData }) {
           style={{
             width: CARD_W,
             height: CARD_H,
-            transform: `scale(${SCALE})`,
+            transform: `scale(${THUMB_SCALE})`,
             transformOrigin: "top left",
             position: "absolute",
             top: 0,
