@@ -23,8 +23,10 @@ function CardPreview({ formData, selectedTemplate }) {
   };
 
   return (
-    <div className="mx-auto aspect-[55/91] w-full max-w-[240px]">
-      <TemplateComponent {...previewData} />
+    <div className="flex justify-center">
+      <div className="aspect-[55/91] w-[180px] sm:w-[240px]">
+        <TemplateComponent {...previewData} />
+      </div>
     </div>
   );
 }
@@ -87,8 +89,8 @@ export default function Step2ThemePicker({
       <div className="space-y-5">
         <label className="input-label">デザインテンプレートを選択</label>
         <div
-          className="flex gap-4 overflow-x-auto py-3 px-2 -mx-1"
-          style={{ scrollbarWidth: "thin", scrollbarColor: "#ddd transparent" }}
+          className="flex gap-4 overflow-x-auto py-3 px-1 w-full"
+          style={{ scrollbarWidth: "thin", scrollbarColor: "#ddd transparent", WebkitOverflowScrolling: "touch" }}
         >
           {CARD_TEMPLATES.map((template) => (
             <TemplateThumbnail

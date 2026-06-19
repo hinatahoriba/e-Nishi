@@ -86,8 +86,8 @@ export default function HomeClient() {
     <>
       <Stepper currentStep={currentStep} />
 
-      <div className="mx-auto max-w-xl px-6 pb-24 pt-28 sm:pt-36">
-        <div className="min-h-[400px] flex flex-col justify-start rounded-sm border border-[#EAEAEA] bg-white p-10 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+      <div className="w-full mx-auto max-w-xl px-3 sm:px-6 pb-24 pt-28 sm:pt-36">
+        <div className="min-h-[400px] flex flex-col justify-start rounded-sm border border-[#EAEAEA] bg-white p-5 sm:p-10 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
           <div className="mb-8">
             <h2 className="mb-2 text-lg font-light tracking-[0.1em] text-[#111]">
               {STEP_DATA[currentStep].title}
@@ -97,7 +97,7 @@ export default function HomeClient() {
             </p>
           </div>
 
-          <div className={currentStep === 4 ? "flex-1" : ""}>
+          <div className={`w-full min-w-0 ${currentStep === 4 ? "flex-1" : ""}`}>
             {currentStep === 1 && (
               <Step1Form formData={formData} setFormData={setFormData} />
             )}

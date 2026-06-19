@@ -39,6 +39,11 @@ export const metadata = {
   description: "デジタル名刺を作成・共有できるWebアプリ",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html
