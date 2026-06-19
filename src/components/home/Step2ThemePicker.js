@@ -1,22 +1,79 @@
 "use client";
 
-import { COLOR_OPTIONS } from "../../lib/card";
+import { CARD_TEMPLATES } from "../card/templates";
 
-export default function Step2ThemePicker({ selectedColor, setSelectedColor }) {
+const CARD_W = 320;
+const CARD_H = Math.round(CARD_W * (91 / 55));
+
+const THUMB_W = 96;
+const SCALE = THUMB_W / CARD_W;
+const THUMB_H = Math.round(CARD_H * SCALE);
+
+function TemplateThumbnail({ template, isSelected, onClick, formData }) {
+  const { component: TemplateComponent } = template;
+
+  const previewData = {
+    name: formData.name || "山田 花子",
+    roman: formData.roman || "Hanako Yamada",
+    affiliation: formData.affiliation || "株式会社サンプル",
+    skill: formData.skill || "",
+    message: formData.message || "",
+  };
+
   return (
-    <div className="space-y-6">
-      <label className="input-label mb-4">カードのテーマカラーを選択</label>
-      <div className="flex flex-wrap gap-4">
-        {COLOR_OPTIONS.map((color) => (
-          <button
-            key={color.key}
-            type="button"
-            className={`h-12 w-12 rounded-full ${color.bgClass} transition-all duration-300 ${color.hoverClass} ${
-              selectedColor === color.key
-                ? `border-4 ${color.borderClass} ring-4 ${color.ringClass}`
-                : `border-2 ${color.borderClass}`
-            }`}
-            onClick={() => setSelectedColor(color.key)}
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex-shrink-0 flex flex-col items-center gap-2.5 outline-none group"
+      aria-label="テンプレートを選択"
+      aria-pressed={isSelected}
+    >
+      <div
+        style={{ width: THUMB_W, height: THUMB_H }}
+        className={`relative overflow-hidden rounded-sm transition-all duration-300 ${
+          isSelected
+            ? "ring-2 ring-offset-2 ring-[#111] shadow-md"
+            : "ring-1 ring-[#e0e0e0] opacity-65 group-hover:opacity-100 group-hover:ring-[#999] group-hover:shadow-sm"
+        }`}
+      >
+        <div
+          style={{
+            width: CARD_W,
+            height: CARD_H,
+            transform: `scale(${SCALE})`,
+            transformOrigin: "top left",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <TemplateComponent {...previewData} />
+        </div>
+      </div>
+    </button>
+  );
+}
+
+export default function Step2ThemePicker({
+  formData,
+  selectedTemplate,
+  setSelectedTemplate,
+}) {
+  return (
+    <div className="space-y-5">
+      <label className="input-label">デザインテンプレートを選択</label>
+      <div
+        className="flex gap-4 overflow-x-auto py-3 px-2 -mx-1"
+        style={{ scrollbarWidth: "thin", scrollbarColor: "#ddd transparent" }}
+      >
+        {CARD_TEMPLATES.map((template) => (
+          <TemplateThumbnail
+            key={template.id}
+            template={template}
+            isSelected={selectedTemplate === template.id}
+            onClick={() => setSelectedTemplate(template.id)}
+            formData={formData}
           />
         ))}
       </div>

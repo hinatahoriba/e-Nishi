@@ -224,7 +224,7 @@ export function getInitialActiveSns(params) {
   return SNS_KEYS.filter((key) => params.get(key));
 }
 
-export function buildCardUrl(formData, selectedColor) {
+export function buildCardUrl(formData, selectedTemplate) {
   const params = new URLSearchParams();
 
   Object.entries(formData).forEach(([key, value]) => {
@@ -233,8 +233,8 @@ export function buildCardUrl(formData, selectedColor) {
     }
   });
 
-  if (selectedColor) {
-    params.append("color", selectedColor);
+  if (selectedTemplate) {
+    params.append("template", selectedTemplate);
   }
 
   const query = params.toString();

@@ -1,7 +1,6 @@
 "use client";
 
 import { Suspense, use, useEffect, useState } from "react";
-import { CARD_THEMES } from "../../lib/card";
 import MenuOverlay from "../../components/card/MenuOverlay";
 import BusinessCard from "../../components/card/BusinessCard";
 
@@ -21,7 +20,7 @@ function CardContent({ searchParamsPromise }) {
   const insta = searchParams.insta || "";
   const tiktok = searchParams.tiktok || "";
   const github = searchParams.github || "";
-  const color = searchParams.color || "stone";
+  const templateId = searchParams.template || "1";
   const currentQuery = new URLSearchParams(searchParams).toString();
   const cardUrl = currentQuery ? `/card?${currentQuery}` : "/card";
 
@@ -33,7 +32,6 @@ function CardContent({ searchParamsPromise }) {
     };
   }, [isMenuOpen]);
 
-  const theme = CARD_THEMES[color] || CARD_THEMES.stone;
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-6">
@@ -81,8 +79,7 @@ function CardContent({ searchParamsPromise }) {
         insta={insta}
         tiktok={tiktok}
         github={github}
-        color={color}
-        theme={theme}
+        templateId={templateId}
         isFlipped={isFlipped}
         onToggleFlip={() => setIsFlipped((prev) => !prev)}
       />

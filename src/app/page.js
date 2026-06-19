@@ -19,8 +19,8 @@ export default function Home() {
   const searchParams = useSearchParams();
   const searchParamsString = searchParams.toString();
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedColor, setSelectedColor] = useState(
-    searchParams.get("color") || "stone"
+  const [selectedTemplate, setSelectedTemplate] = useState(
+    searchParams.get("template") || "1"
   );
   const [activeSns, setActiveSns] = useState(() =>
     getInitialActiveSns(searchParams)
@@ -31,7 +31,7 @@ export default function Home() {
 
   useEffect(() => {
     const params = new URLSearchParams(searchParamsString);
-    setSelectedColor(params.get("color") || "stone");
+    setSelectedTemplate(params.get("template") || "1");
     setActiveSns(getInitialActiveSns(params));
     setFormData(getInitialFormData(params));
   }, [searchParamsString]);
@@ -65,7 +65,7 @@ export default function Home() {
     }
   };
 
-  const cardUrl = buildCardUrl(formData, selectedColor);
+  const cardUrl = buildCardUrl(formData, selectedTemplate);
 
   return (
     <>
@@ -88,8 +88,9 @@ export default function Home() {
             )}
             {currentStep === 2 && (
               <Step2ThemePicker
-                selectedColor={selectedColor}
-                setSelectedColor={setSelectedColor}
+                formData={formData}
+                selectedTemplate={selectedTemplate}
+                setSelectedTemplate={setSelectedTemplate}
               />
             )}
             {currentStep === 3 && (
