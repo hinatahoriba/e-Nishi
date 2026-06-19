@@ -9,6 +9,26 @@ const THUMB_W = 96;
 const SCALE = THUMB_W / CARD_W;
 const THUMB_H = Math.round(CARD_H * SCALE);
 
+function CardPreview({ formData, selectedTemplate }) {
+  const { component: TemplateComponent } =
+    CARD_TEMPLATES.find((template) => template.id === selectedTemplate) ??
+    CARD_TEMPLATES[0];
+
+  const previewData = {
+    name: formData.name || "山田 花子",
+    roman: formData.roman || "Yamada Hanako",
+    affiliation: formData.affiliation || "株式会社サンプル",
+    skill: formData.skill || "",
+    message: formData.message || "",
+  };
+
+  return (
+    <div className="mx-auto aspect-[55/91] w-full max-w-[240px]">
+      <TemplateComponent {...previewData} />
+    </div>
+  );
+}
+
 function TemplateThumbnail({ template, isSelected, onClick, formData }) {
   const { component: TemplateComponent } = template;
 
@@ -62,20 +82,24 @@ export default function Step2ThemePicker({
 }) {
   return (
     <div className="space-y-5">
-      <label className="input-label">デザインテンプレートを選択</label>
-      <div
-        className="flex gap-4 overflow-x-auto py-3 px-2 -mx-1"
-        style={{ scrollbarWidth: "thin", scrollbarColor: "#ddd transparent" }}
-      >
-        {CARD_TEMPLATES.map((template) => (
-          <TemplateThumbnail
-            key={template.id}
-            template={template}
-            isSelected={selectedTemplate === template.id}
-            onClick={() => setSelectedTemplate(template.id)}
-            formData={formData}
-          />
-        ))}
+      <CardPreview formData={formData} selectedTemplate={selectedTemplate} />
+
+      <div className="space-y-5">
+        <label className="input-label">デザインテンプレートを選択</label>
+        <div
+          className="flex gap-4 overflow-x-auto py-3 px-2 -mx-1"
+          style={{ scrollbarWidth: "thin", scrollbarColor: "#ddd transparent" }}
+        >
+          {CARD_TEMPLATES.map((template) => (
+            <TemplateThumbnail
+              key={template.id}
+              template={template}
+              isSelected={selectedTemplate === template.id}
+              onClick={() => setSelectedTemplate(template.id)}
+              formData={formData}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
