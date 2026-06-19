@@ -67,6 +67,33 @@ export default function SnsInput({
           />
         )
       )}
+      {snsKey === "x" && (
+        <div className="mt-2 rounded-lg bg-[#F7F7F7] px-3 py-2.5 text-[11px] text-[#555]">
+          <p className="mb-1.5 font-medium text-[#333]">ユーザー名の確認方法</p>
+          <ol className="space-y-1 leading-relaxed">
+            <li className="flex items-center gap-2">
+              <span className="font-medium text-[#111]">①</span>
+              <a
+                href="https://x.com/i/flow/login"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded-full bg-[#111] px-3 py-1 text-[11px] font-medium text-white transition-opacity hover:opacity-70"
+              >
+                <i className="fa-brands fa-x-twitter text-sm" />
+                プロフィール画面を開く
+              </a>
+            </li>
+            <li>
+              <span className="mr-1 font-medium text-[#111]">②</span>
+              プロフィール画面で「@ユーザー名」を確認
+            </li>
+            <li>
+              <span className="mr-1 font-medium text-[#111]">③</span>
+              @を除いたユーザー名を戻ってきて入力
+            </li>
+          </ol>
+        </div>
+      )}
       {snsKey === "line" && (
         <div className="mt-2 rounded-lg bg-[#F6FFF6] px-3 py-2.5 text-[11px] text-[#555]">
           <p className="mb-1.5 font-medium text-[#333]">LINEのURLの取得方法</p>
