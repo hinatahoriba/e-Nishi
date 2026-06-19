@@ -38,6 +38,8 @@ export default function BusinessCard({
   templateId = "1",
   isFlipped,
   onToggleFlip,
+  className = "w-80",
+  showFlipHint = true,
 }) {
   const hasSNS = Boolean(line || twitter || insta || tiktok || github);
   const hasPortfolio = Boolean(portfolio);
@@ -53,7 +55,7 @@ export default function BusinessCard({
   return (
     <>
       <div
-        className={`w-80 aspect-[55/91] perspective-1000 select-none transform transition-transform duration-300 ${
+        className={`${className} aspect-[55/91] perspective-1000 select-none transform transition-transform duration-300 ${
           hasBackContent ? "hover:-translate-y-1 cursor-pointer" : ""
         }`}
         onClick={() => hasBackContent && onToggleFlip()}
@@ -168,7 +170,7 @@ export default function BusinessCard({
         </div>
       </div>
 
-      {hasBackContent && (
+      {hasBackContent && showFlipHint && (
         <p className={`text-[10px] tracking-widest animate-pulse ${backTheme.textMuted}`}>
           ※カードをクリックすると表裏が切り替わります
         </p>

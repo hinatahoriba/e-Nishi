@@ -105,6 +105,7 @@ export default function HomeClient() {
                 setFormData={setFormData}
                 activeSns={activeSns}
                 toggleSns={toggleSns}
+                selectedTemplate={selectedTemplate}
               />
             )}
             {currentStep === 4 && <Step4Share cardUrl={cardUrl} />}
