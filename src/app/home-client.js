@@ -8,6 +8,7 @@ import {
   buildCardUrl,
   getInitialActiveSns,
   getInitialFormData,
+  parseCardParams,
   splitNameParts,
 } from "../lib/card";
 import Stepper from "../components/home/Stepper";
@@ -21,7 +22,7 @@ export default function HomeClient() {
   const searchParamsString = searchParams.toString();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedTemplate, setSelectedTemplate] = useState(
-    searchParams.get("template") || "1"
+    parseCardParams(searchParams).template
   );
   const [activeSns, setActiveSns] = useState(() =>
     getInitialActiveSns(searchParams)
@@ -32,7 +33,7 @@ export default function HomeClient() {
 
   useEffect(() => {
     const params = new URLSearchParams(searchParamsString);
-    setSelectedTemplate(params.get("template") || "1");
+    setSelectedTemplate(parseCardParams(params).template);
     setActiveSns(getInitialActiveSns(params));
     setFormData(getInitialFormData(params));
   }, [searchParamsString]);

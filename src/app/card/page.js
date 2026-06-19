@@ -4,24 +4,17 @@ import { Suspense, use, useEffect, useState } from "react";
 import MenuOverlay from "../../components/card/MenuOverlay";
 import BusinessCard from "../../components/card/BusinessCard";
 import { getTemplateById } from "../../components/card/templates";
+import { parseCardParams } from "../../lib/card";
 
 function CardContent({ searchParamsPromise }) {
   const searchParams = use(searchParamsPromise);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const name = searchParams.name || "";
-  const roman = searchParams.roman || "";
-  const affiliation = searchParams.affiliation || "";
-  const skill = searchParams.skill || "";
-  const message = searchParams.message || "";
-  const portfolio = searchParams.portfolio || "";
-  const line = searchParams.line || "";
-  const twitter = searchParams.x || "";
-  const insta = searchParams.insta || "";
-  const tiktok = searchParams.tiktok || "";
-  const github = searchParams.github || "";
-  const templateId = searchParams.template || "1";
+  const {
+    name, roman, affiliation, skill, message, portfolio,
+    line, x: twitter, insta, tiktok, github, template: templateId,
+  } = parseCardParams(searchParams);
   const { pageBg } = getTemplateById(templateId);
   const currentQuery = new URLSearchParams(searchParams).toString();
   const cardUrl = currentQuery ? `/card?${currentQuery}` : "/card";

@@ -1,3 +1,69 @@
+import LZString from "lz-string";
+
+const KEY_MAP = {
+  name: "n",
+  roman: "r",
+  affiliation: "a",
+  skill: "s",
+  message: "m",
+  portfolio: "p",
+  line: "ln",
+  x: "x",
+  insta: "i",
+  tiktok: "tk",
+  github: "gh",
+};
+
+function getParam(params, key) {
+  return (typeof params.get === "function" ? params.get(key) : params[key]) || "";
+}
+
+function decodeCardData(params) {
+  const d = getParam(params, "d");
+  if (!d) return null;
+  try {
+    const raw = LZString.decompressFromEncodedURIComponent(d);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    return {
+      name: data.n || "",
+      roman: data.r || "",
+      affiliation: data.a || "",
+      skill: data.s || "",
+      message: data.m || "",
+      portfolio: data.p || "",
+      line: data.ln || "",
+      x: data.x || "",
+      insta: data.i || "",
+      tiktok: data.tk || "",
+      github: data.gh || "",
+      template: data.t || "1",
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function parseCardParams(params) {
+  const decoded = decodeCardData(params);
+  if (decoded) return decoded;
+
+  return {
+    name: getParam(params, "name"),
+    roman: getParam(params, "roman"),
+    affiliation: getParam(params, "affiliation"),
+    skill: getParam(params, "skill"),
+    message: getParam(params, "message"),
+    portfolio: getParam(params, "portfolio"),
+    line: getParam(params, "line"),
+    x: getParam(params, "x"),
+    insta: getParam(params, "insta"),
+    tiktok: getParam(params, "tiktok"),
+    github: getParam(params, "github"),
+    template: getParam(params, "template") || "1",
+  };
+}
+
 export const STEP_DATA = {
   1: {
     title: "表面情報の入力",
@@ -227,40 +293,24 @@ export function joinNameParts(familyName, givenName) {
 }
 
 export function getInitialFormData(params) {
-  return {
-    name: params.get("name") || "",
-    roman: params.get("roman") || "",
-    affiliation: params.get("affiliation") || "",
-    skill: params.get("skill") || "",
-    message: params.get("message") || "",
-    portfolio: params.get("portfolio") || "",
-    line: params.get("line") || "",
-    x: params.get("x") || "",
-    insta: params.get("insta") || "",
-    tiktok: params.get("tiktok") || "",
-    github: params.get("github") || "",
-  };
+  const { template: _, ...formData } = parseCardParams(params);
+  return formData;
 }
 
 export function getInitialActiveSns(params) {
-  return SNS_KEYS.filter((key) => params.get(key));
+  const decoded = parseCardParams(params);
+  return SNS_KEYS.filter((key) => decoded[key]);
 }
 
 export function buildCardUrl(formData, selectedTemplate) {
-  const params = new URLSearchParams();
-
-  Object.entries(formData).forEach(([key, value]) => {
-    if (value) {
-      params.append(key, value);
-    }
+  const data = {};
+  Object.entries(KEY_MAP).forEach(([longKey, shortKey]) => {
+    if (formData[longKey]) data[shortKey] = formData[longKey];
   });
+  if (selectedTemplate) data.t = selectedTemplate;
 
-  if (selectedTemplate) {
-    params.append("template", selectedTemplate);
-  }
-
-  const query = params.toString();
-  return query ? `/card?${query}` : "/card";
+  const compressed = LZString.compressToEncodedURIComponent(JSON.stringify(data));
+  return `/card?d=${compressed}`;
 }
 
 export function getFullCardUrl(cardUrl, origin) {
