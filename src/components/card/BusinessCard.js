@@ -15,6 +15,7 @@ function SocialLink({ type, value, theme }) {
       href={social.href(value)}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
       className={`transition-all duration-300 ${theme.icon}`}
     >
       <i className={`${social.icon} text-lg`} />
@@ -63,7 +64,11 @@ export default function BusinessCard({
           }`}
         >
           {/* フロント面：テンプレートコンポーネントに委譲 */}
-          <div className="absolute inset-0 w-full h-full backface-hidden">
+          <div
+            className={`absolute inset-0 w-full h-full backface-hidden ${
+              isFlipped ? "pointer-events-none" : "pointer-events-auto"
+            }`}
+          >
             <FrontTemplate
               name={name}
               roman={roman}
@@ -77,6 +82,7 @@ export default function BusinessCard({
           {hasBackContent && (
             <div
               className={`absolute inset-0 w-full h-full rounded-sm shadow-xl p-8 flex flex-col justify-between items-center text-center border backface-hidden rotate-y-180 ${backTheme.bg} ${backTheme.border}`}
+              style={{ pointerEvents: isFlipped ? "auto" : "none" }}
             >
               <div className="mt-6">
                 <p
