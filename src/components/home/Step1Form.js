@@ -1,33 +1,83 @@
-import { MESSAGE_MAX_LENGTH } from "../../lib/card";
+import {
+  joinNameParts,
+  MESSAGE_MAX_LENGTH,
+  splitNameParts,
+} from "../../lib/card";
 
 export default function Step1Form({ formData, setFormData }) {
+  const nameParts = splitNameParts(formData.name);
+  const romanParts = splitNameParts(formData.roman);
+
+  const updateName = (familyName, givenName) => {
+    setFormData((prev) => ({
+      ...prev,
+      name: joinNameParts(familyName, givenName),
+    }));
+  };
+
+  const updateRoman = (familyName, givenName) => {
+    setFormData((prev) => ({
+      ...prev,
+      roman: joinNameParts(familyName, givenName),
+    }));
+  };
+
   return (
     <div className="space-y-6">
       <div>
         <label className="input-label">
           氏名<span className="required-mark">必須</span>
         </label>
-        <input
-          type="text"
-          className="input-field"
-          placeholder="山田 太郎"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        />
+        <div className="mt-2 grid grid-cols-2 gap-3">
+          <div className="space-y-1">
+            <label className="text-[10px] tracking-[0.1em] text-[#888]">姓</label>
+            <input
+              type="text"
+              className="input-field"
+              placeholder="山田"
+              value={nameParts.familyName}
+              onChange={(e) => updateName(e.target.value, nameParts.givenName)}
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-[10px] tracking-[0.1em] text-[#888]">名</label>
+            <input
+              type="text"
+              className="input-field"
+              placeholder="太郎"
+              value={nameParts.givenName}
+              onChange={(e) => updateName(nameParts.familyName, e.target.value)}
+            />
+          </div>
+        </div>
       </div>
-      <div className="flex gap-4">
-        <div className="flex-1">
-          <label className="input-label">
-            ローマ字<span className="required-mark">必須</span>
-          </label>
-          <input
-            type="text"
-            className="input-field text-base"
-            style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
-            placeholder="Taro Yamada"
-            value={formData.roman}
-            onChange={(e) => setFormData({ ...formData, roman: e.target.value })}
-          />
+      <div>
+        <label className="input-label">
+          フリガナ（ローマ字）<span className="required-mark">必須</span>
+        </label>
+        <div className="mt-2 grid grid-cols-2 gap-3">
+          <div className="space-y-1">
+            <label className="text-[10px] tracking-[0.1em] text-[#888]">姓</label>
+            <input
+              type="text"
+              className="input-field text-base"
+              style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
+              placeholder="Yamada"
+              value={romanParts.familyName}
+              onChange={(e) => updateRoman(e.target.value, romanParts.givenName)}
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-[10px] tracking-[0.1em] text-[#888]">名</label>
+            <input
+              type="text"
+              className="input-field text-base"
+              style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
+              placeholder="Taro"
+              value={romanParts.givenName}
+              onChange={(e) => updateRoman(romanParts.familyName, e.target.value)}
+            />
+          </div>
         </div>
       </div>
       <div>

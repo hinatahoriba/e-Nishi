@@ -204,6 +204,28 @@ export const SOCIAL_LINKS = {
 
 const SNS_KEYS = SNS_OPTIONS.map((option) => option.key);
 
+export function splitNameParts(value) {
+  const normalized = (value || "").trim().replace(/[\s\u3000]+/g, " ");
+
+  if (!normalized) {
+    return { familyName: "", givenName: "" };
+  }
+
+  const [familyName = "", ...givenNameParts] = normalized.split(" ");
+
+  return {
+    familyName,
+    givenName: givenNameParts.join(" "),
+  };
+}
+
+export function joinNameParts(familyName, givenName) {
+  return [familyName, givenName]
+    .map((part) => (part || "").trim())
+    .filter(Boolean)
+    .join(" ");
+}
+
 export function getInitialFormData(params) {
   return {
     name: params.get("name") || "",

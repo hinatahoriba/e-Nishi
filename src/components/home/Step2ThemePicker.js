@@ -14,7 +14,7 @@ function TemplateThumbnail({ template, isSelected, onClick, formData }) {
 
   const previewData = {
     name: formData.name || "山田 花子",
-    roman: formData.roman || "Hanako Yamada",
+    roman: formData.roman || "Yamada Hanako",
     affiliation: formData.affiliation || "株式会社サンプル",
     skill: formData.skill || "",
     message: formData.message || "",

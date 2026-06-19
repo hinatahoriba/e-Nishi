@@ -8,6 +8,7 @@ import {
   buildCardUrl,
   getInitialActiveSns,
   getInitialFormData,
+  splitNameParts,
 } from "../lib/card";
 import Stepper from "../components/home/Stepper";
 import Step1Form from "../components/home/Step1Form";
@@ -36,9 +37,14 @@ export default function HomeClient() {
     setFormData(getInitialFormData(params));
   }, [searchParamsString]);
 
+  const nameParts = splitNameParts(formData.name);
+  const romanParts = splitNameParts(formData.roman);
+
   const isStep1Complete =
-    formData.name.trim().length > 0 &&
-    formData.roman.trim().length > 0 &&
+    nameParts.familyName.length > 0 &&
+    nameParts.givenName.length > 0 &&
+    romanParts.familyName.length > 0 &&
+    romanParts.givenName.length > 0 &&
     formData.affiliation.trim().length > 0;
 
   const toggleSns = (key) => {
