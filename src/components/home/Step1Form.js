@@ -29,26 +29,24 @@ export default function Step1Form({ formData, setFormData }) {
           氏名<span className="required-mark">必須</span>
         </label>
         <div className="mt-2 grid grid-cols-2 gap-3">
-          <div className="space-y-1">
-            <label className="text-[10px] tracking-[0.1em] text-[#888]">姓</label>
-            <input
-              type="text"
-              className="input-field"
-              placeholder="山田"
-              value={nameParts.familyName}
-              onChange={(e) => updateName(e.target.value, nameParts.givenName)}
-            />
-          </div>
-          <div className="space-y-1">
-            <label className="text-[10px] tracking-[0.1em] text-[#888]">名</label>
-            <input
-              type="text"
-              className="input-field"
-              placeholder="太郎"
-              value={nameParts.givenName}
-              onChange={(e) => updateName(nameParts.familyName, e.target.value)}
-            />
-          </div>
+          <input
+            type="text"
+            className="input-field"
+            placeholder="姓：山田"
+            aria-label="氏名の姓"
+            autoComplete="family-name"
+            value={nameParts.familyName}
+            onChange={(e) => updateName(e.target.value, nameParts.givenName)}
+          />
+          <input
+            type="text"
+            className="input-field"
+            placeholder="名：太郎"
+            aria-label="氏名の名"
+            autoComplete="given-name"
+            value={nameParts.givenName}
+            onChange={(e) => updateName(nameParts.familyName, e.target.value)}
+          />
         </div>
       </div>
       <div>
@@ -56,28 +54,26 @@ export default function Step1Form({ formData, setFormData }) {
           フリガナ（ローマ字）<span className="required-mark">必須</span>
         </label>
         <div className="mt-2 grid grid-cols-2 gap-3">
-          <div className="space-y-1">
-            <label className="text-[10px] tracking-[0.1em] text-[#888]">姓</label>
-            <input
-              type="text"
-              className="input-field text-base"
-              style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
-              placeholder="Yamada"
-              value={romanParts.familyName}
-              onChange={(e) => updateRoman(e.target.value, romanParts.givenName)}
-            />
-          </div>
-          <div className="space-y-1">
-            <label className="text-[10px] tracking-[0.1em] text-[#888]">名</label>
-            <input
-              type="text"
-              className="input-field text-base"
-              style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
-              placeholder="Taro"
-              value={romanParts.givenName}
-              onChange={(e) => updateRoman(romanParts.familyName, e.target.value)}
-            />
-          </div>
+          <input
+            type="text"
+            className="input-field text-base"
+            style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
+            placeholder="姓：Yamada"
+            aria-label="フリガナの姓"
+            autoComplete="family-name"
+            value={romanParts.familyName}
+            onChange={(e) => updateRoman(e.target.value, romanParts.givenName)}
+          />
+          <input
+            type="text"
+            className="input-field text-base"
+            style={{ fontFamily: "var(--font-cormorant-garamond), serif" }}
+            placeholder="名：Taro"
+            aria-label="フリガナの名"
+            autoComplete="given-name"
+            value={romanParts.givenName}
+            onChange={(e) => updateRoman(romanParts.familyName, e.target.value)}
+          />
         </div>
       </div>
       <div>
