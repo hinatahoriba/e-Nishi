@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { SNS_OPTIONS, SNS_PLACEHOLDERS } from "../../lib/card";
 import BusinessCard from "../card/BusinessCard";
 import SnsInput from "./SnsInput";
@@ -56,6 +57,17 @@ export default function Step3SocialLinks({
   toggleSns,
   selectedTemplate,
 }) {
+  const [portfolioPasted, setPortfolioPasted] = useState(false);
+
+  const handlePastePortfolio = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      setFormData({ ...formData, portfolio: text });
+      setPortfolioPasted(true);
+      setTimeout(() => setPortfolioPasted(false), 1500);
+    } catch {}
+  };
+
   const hasPortfolio = Boolean(formData.portfolio.trim());
   const hasSNS = Boolean(
     formData.line.trim() ||
@@ -77,15 +89,25 @@ export default function Step3SocialLinks({
       <div className="space-y-5">
         <div>
           <label className="input-label">ポートフォリオ</label>
-          <input
-            type="url"
-            className="input-field"
-            placeholder="https://your-portfolio.com"
-            value={formData.portfolio}
-            onChange={(e) =>
-              setFormData({ ...formData, portfolio: e.target.value })
-            }
-          />
+          <div className="relative flex items-center">
+            <input
+              type="url"
+              className="input-field pr-6"
+              placeholder="https://your-portfolio.com"
+              value={formData.portfolio}
+              onChange={(e) =>
+                setFormData({ ...formData, portfolio: e.target.value })
+              }
+            />
+            <button
+              type="button"
+              onClick={handlePastePortfolio}
+              className="absolute right-0 pb-2 text-[#CCC] transition-colors hover:text-[#111]"
+              title="クリップボードから貼り付け"
+            >
+              <i className={portfolioPasted ? "fa-solid fa-check text-green-500" : "fa-regular fa-paste"} />
+            </button>
+          </div>
         </div>
 
         <div>
