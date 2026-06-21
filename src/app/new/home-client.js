@@ -10,12 +10,12 @@ import {
   getInitialFormData,
   parseCardParams,
   splitNameParts,
-} from "../lib/card";
-import Stepper from "../components/home/Stepper";
-import Step1Form from "../components/home/Step1Form";
-import Step2ThemePicker from "../components/home/Step2ThemePicker";
-import Step3SocialLinks from "../components/home/Step3SocialLinks";
-import Step4Share from "../components/home/Step4Share";
+} from "../../lib/card";
+import Stepper from "../../components/home/Stepper";
+import Step1Form from "../../components/home/Step1Form";
+import Step2ThemePicker from "../../components/home/Step2ThemePicker";
+import Step3SocialLinks from "../../components/home/Step3SocialLinks";
+import Step4Share from "../../components/home/Step4Share";
 
 export default function HomeClient() {
   const searchParams = useSearchParams();
