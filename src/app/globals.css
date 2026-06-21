@@ -10,6 +10,12 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-noto-sans-jp);
   --font-serif: var(--font-cormorant-garamond);
+  --color-appBg: #faf9f6;
+  --color-appCard: #ffffff;
+  --color-appText: #1a1a1a;
+  --color-appSub: #8c8c8c;
+  --color-appBorder: #e5e5e5;
+  --color-appAlert: #e07d75;
 }
 
 html {
