@@ -27,10 +27,11 @@ export default function MenuOverlay({ isOpen, onClose, cardUrl }) {
     }
   };
 
-  const editUrl = cardUrl === "/card" ? "/" : `/${cardUrl.replace(/^\/card/, "")}`;
+  const editUrl = cardUrl.replace(/^\/card/, "/new");
+
   const menuItems = [
     {
-      href: "/",
+      href: "/new",
       title: "New Card",
       description: "新しく名刺を作成する",
       target: "_self",
